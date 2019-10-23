@@ -1,28 +1,50 @@
-Commands:
+Initialize project or reinitialize:
 
-make init - Initialize project or reinitialize
+    make init
 
-make up - Start docker
+Start docker:
 
-make down - Stop docker
+    make up
 
-make restart - Restart docker
+Stop docker:
 
-make test - Run all tests
+    make down 
 
-make test-coverage - Make Coverage for all tests
+Restart docker:
 
-make test-unit - Run unit tests
+    make restart
 
-make test-unit-coverage - Make Coverage for unit tests
+Run all tests:
 
-make utility-composer-install - Composer install
+    make test
 
-make utility-assets-install - Assets install
+Make Coverage for all tests:
 
-make utility-migrations - Run migrations
+    make test-coverage
 
-make utility-fixtures - Load fixtures
+Run unit tests:
+
+    make test-unit
+
+Make Coverage for unit tests:
+
+    make test-unit-coverage
+
+Composer install:
+
+    make utility-composer-install
+
+Assets install:
+
+    make utility-assets-install
+
+Run migrations:
+
+    make utility-migrations
+
+Load fixtures:
+
+    make utility-fixtures
 
 Postgres:
 
@@ -36,19 +58,35 @@ Composer:
 
 How to deploy:
 
-1) docker login [OPTIONS] [SERVER]
+1:
 
-    Instruction: https://docs.docker.com/engine/reference/commandline/login/
+    docker login [OPTIONS] [SERVER]
 
-2) REGISTRY_ADDRESS={REGISTRY_ADDRESS} IMAGE_TAG={IMAGE_TAG} make build-production
-
-    Example: REGISTRY_ADDRESS=registry.gitlab.com/login/app IMAGE_TAG=0.0.1 make build-production
+    Instruction:
     
-3) REGISTRY_ADDRESS={REGISTRY_ADDRESS} IMAGE_TAG={IMAGE_TAG} make push-production
+    https://docs.docker.com/engine/reference/commandline/login/
 
-    Example: REGISTRY_ADDRESS=registry.gitlab.com/login/app IMAGE_TAG=0.0.1 make push-production
+2: 
     
-4) PRODUCTION_HOST={PRODUCTION_HOST} PRODUCTION_KEY_PATH={PRODUCTION_KEY_PATH} PRODUCTION_LOGIN={PRODUCTION_LOGIN} PRODUCTION_PORT={PRODUCTION_PORT} IMAGE_TAG={IMAGE_TAG} UTILITY_APP_SECRET={UTILITY_APP_SECRET} UTILITY_DB_PASSWORD={UTILITY_DB_PASSWORD} UTILITY_MAILER_URL={UTILITY_MAILER_URL} UTILITY_ADMIN_PASSWORD='{UTILITY_ADMIN_PASSWORD}' make deploy-production
+    REGISTRY_ADDRESS={REGISTRY_ADDRESS} IMAGE_TAG={IMAGE_TAG} make build-production
+
+    Example:
     
-    Example: PRODUCTION_HOST=127.0.0.1 PRODUCTION_KEY_PATH=secret.pem PRODUCTION_LOGIN=ubuntu PRODUCTION_PORT=22 IMAGE_TAG=0.0.1-beta UTILITY_APP_SECRET=a5d5871b86c8bbef957308b1ec1f8622 UTILITY_DB_PASSWORD=password UTILITY_MAILER_URL=gmail://email@gmail.com:password@smtp.gmail.com UTILITY_ADMIN_PASSWORD='$2y$13$9mLgesIUBrzfaItvbP7yMePpAbJ.3wcE2/1GOwYJ9FEA40JSuIHJi' make deploy-production
+    REGISTRY_ADDRESS=registry.gitlab.com/login/app IMAGE_TAG=0.0.1 make build-production
+    
+3: 
+    
+    REGISTRY_ADDRESS={REGISTRY_ADDRESS} IMAGE_TAG={IMAGE_TAG} make push-production
+
+    Example:
+    
+    REGISTRY_ADDRESS=registry.gitlab.com/login/app IMAGE_TAG=0.0.1 make push-production
+    
+4: 
+
+    PRODUCTION_HOST={PRODUCTION_HOST} PRODUCTION_KEY_PATH={PRODUCTION_KEY_PATH} PRODUCTION_LOGIN={PRODUCTION_LOGIN} PRODUCTION_PORT={PRODUCTION_PORT} IMAGE_TAG={IMAGE_TAG} UTILITY_APP_SECRET={UTILITY_APP_SECRET} UTILITY_DB_PASSWORD={UTILITY_DB_PASSWORD} UTILITY_MAILER_URL={UTILITY_MAILER_URL} UTILITY_ADMIN_PASSWORD='{UTILITY_ADMIN_PASSWORD}' make deploy-production
+    
+    Example:
+    
+    PRODUCTION_HOST=127.0.0.1 PRODUCTION_KEY_PATH=secret.pem PRODUCTION_LOGIN=ubuntu PRODUCTION_PORT=22 IMAGE_TAG=0.0.1-beta UTILITY_APP_SECRET=a5d5871b86c8bbef957308b1ec1f8622 UTILITY_DB_PASSWORD=password UTILITY_MAILER_URL=gmail://email@gmail.com:password@smtp.gmail.com UTILITY_ADMIN_PASSWORD='$2y$13$9mLgesIUBrzfaItvbP7yMePpAbJ.3wcE2/1GOwYJ9FEA40JSuIHJi' make deploy-production
 
