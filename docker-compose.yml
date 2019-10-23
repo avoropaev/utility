@@ -1,0 +1,66 @@
+version: '3'
+services:
+    utility-nginx:
+        build:
+            context: ./docker/development
+            dockerfile: nginx.docker
+        volumes:
+            - ./app:/app:cached
+        depends_on:
+            - utility-php-fpm
+        ports:
+            - "7000:80"
+
+    utility-php-fpm:
+        build:
+            context: ./docker/development
+            dockerfile: php-fpm.docker
+        volumes:
+            - ./app:/app:cached
+        depends_on:
+            - utility-postgres
+            - mailer
+
+    utility-php-cli:
+        build:
+            context: ./docker/development
+            dockerfile: php-cli.docker
+        volumes:
+            - ./app:/app:cached
+            - composer:/root/.composer/cache:cached
+        depends_on:
+            - utility-postgres
+            - mailer
+
+    utility-postgres:
+        image: postgres:11.2-alpine
+        volumes:
+            - utility-postgres:/var/lib/postgresql/data:cached
+        environment:
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: app
+        ports:
+            - "7432:5432"
+
+    utility-node:
+        image: node:12.7-alpine
+        volumes:
+            - ./app:/app
+        working_dir: /app
+
+    utility-node-watch:
+        image: node:12.7-alpine
+        volumes:
+            - ./app:/app:cached
+        working_dir: /app
+        command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && npm run watch"
+
+    mailer:
+        image: mailhog/mailhog
+        ports:
+            - "7001:8025"
+
+volumes:
+    utility-postgres:
+    composer:

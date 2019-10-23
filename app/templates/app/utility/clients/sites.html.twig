@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sites{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients') }}">Clients</a></li>
+        {% if client %}
+            <li class="breadcrumb-item"><a href="{{ path('utility.clients.client.show', {'id': client.id}) }}">{{ client.name }}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active">Sites</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+
+    {% if client %}
+        {% include 'app/utility/clients/client/_tabs.html.twig' %}
+    {% else %}
+        {% include 'app/utility/clients/_tabs.html.twig' %}
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-2">{{ form_widget(form.id) }}</div>
+                <div class="col-md-2">{{ form_widget(form.name) }}</div>
+                {% if client %}
+                    <div class="col-md-2" style="display: none;">{{ form_widget(form.client) }}</div>
+                {% else %}
+                    <div class="col-md-2">{{ form_widget(form.client) }}</div>
+                {% endif %}
+                <div class="col-md-3 mb-2">{{ form_widget(form.product_groups) }}</div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    {% if client %}
+                        <a href="{{ path('utility.clients.client.sites', {'client_id': client.id}) }}" class="btn btn-default">Clear</a>
+                    {% else %}
+                        <a href="{{ path('utility.clients.sites') }}" class="btn btn-default">Clear</a>
+                    {% endif %}
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+    <div class="box">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(pagination, 'ID', 'id') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Name', 'name') }}</th>
+                    {% if not client %}
+                        <th>Client</th>
+                    {% endif %}
+                    <th>Product Groups</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for site in pagination %}
+                    <tr>
+                        <td>{{ site.id }}</td>
+                        <td><a href="{{ path('utility.clients.sites.show', {'id': site.id}) }}">{{ site.name }}</a></td>
+                        {% if not client %}
+                            <td>
+                                <a href="{{ path('utility.clients.client.show', {'id':  site.client_id}) }}">{{ site.client_name }}</a>
+                            </td>
+                        {% endif %}
+                        <td>
+                            {% for product_group in site.product_groups %}
+                                <a href="{{ path('utility.clients.product_groups.show', {'id': product_group.id}) }}" class="badge badge-lg badge-primary">{{ product_group.name }}</a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+{% endblock %}

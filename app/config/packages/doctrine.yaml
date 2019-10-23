@@ -1,0 +1,31 @@
+doctrine:
+    dbal:
+        # configure these for your database server
+        driver: 'pdo_pgsql'
+        server_version: '11.2'
+        charset: utf8
+        default_table_options:
+            charset: utf8
+            collate: -
+
+        url: '%env(resolve:DATABASE_URL)%'
+
+        types:
+            utility_clients_client_id: 'App\Model\Utility\Entity\Clients\Client\IdType'
+            utility_clients_client_secret_key: 'App\Model\Utility\Entity\Clients\Client\SecretKeyType'
+            utility_clients_site_id: 'App\Model\Utility\Entity\Clients\Site\IdType'
+            utility_clients_product_group_id: 'App\Model\Utility\Entity\Clients\ProductGroup\IdType'
+            utility_clients_product_groups_charge_id: 'App\Model\Utility\Entity\Clients\ProductGroup\Charge\IdType'
+            utility_clients_product_groups_charge_recurring_cycles: 'App\Model\Utility\Entity\Clients\ProductGroup\Charge\RecurringCyclesType'
+
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        mappings:
+            Utility:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Model/Utility/Entity'
+                prefix: 'App\Model\Utility\Entity'
+                alias: Utility

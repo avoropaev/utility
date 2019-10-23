@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product_group.name }}{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients') }}">Clients</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients.client.show', {'id': product_group.client.id}) }}">{{ product_group.client.name }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients.client.product_groups', {'client_id': product_group.client.id}) }}">Product Groups</a></li>
+        <li class="breadcrumb-item active">{{ product_group.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+
+    <div class="box">
+        <table class="table table-bordered mb-4">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ product_group.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ product_group.name }}</td>
+                </tr>
+                <tr>
+                    <th>GUID</th>
+                    <td>{{ product_group.guid }}</td>
+                </tr>
+                <tr>
+                    <th>Client</th>
+                    <td><a href="{{ path('utility.clients.client.show', {'id': product_group.client.id}) }}">{{ product_group.client.name }}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">Charges</div>
+                <div class="card-body pt-0 pb-0">
+                    <table class="table table-responsive-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th class="b-t-0">ID</th>
+                                <th class="b-t-0">Name</th>
+                                <th class="b-t-0">Type</th>
+                                <th class="b-t-0">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for charge in product_group.charges %}
+                                {% if charge.recurringCycles is not empty %}
+                                    <tr>
+                                        <td rowspan="2">{{ charge.id }}</td>
+                                        <td rowspan="2">{{ charge.name }}</td>
+                                        <td>{{ charge.type }}</td>
+                                        <td>${{ charge.amount|number_format(2, '.', '') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <table class="table table-responsive-sm mb-0 text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th class="b-t-0">Cycle Number</th>
+                                                    <th class="b-t-0">Amount</th>
+                                                    <th class="b-t-0">Delay</th>
+                                                    <th class="b-t-0">Shippable</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for recurring_cycle in charge.recurringCycles %}
+                                                        <tr>
+                                                            <td>{{ recurring_cycle.cycleNum }}</td>
+                                                            <td>${{ recurring_cycle.amount|number_format(2, '.', '') }}</td>
+                                                            <td>{{ recurring_cycle.delay }}</td>
+                                                            <td>{{ recurring_cycle.shippable ? 'Yes' : 'No' }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td>{{ charge.id }}</td>
+                                        <td>{{ charge.name }}</td>
+                                        <td>{{ charge.type }}</td>
+                                        <td>${{ charge.amount|number_format(2, '.', '') }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">Not found.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">Sites</div>
+                <div class="card-body pt-0 pb-0">
+                    <table class="table table-responsive-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th class="b-t-0">ID</th>
+                                <th class="b-t-0">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for site in product_group.sites %}
+                                <tr>
+                                    <td>{{ site.id }}</td>
+                                    <td><a href="{{ path('utility.clients.sites.show', {'id': site.id}) }}">{{ site.name }}</a></td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="2" class="text-center">Not found.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

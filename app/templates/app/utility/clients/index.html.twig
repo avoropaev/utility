@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Clients</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+
+    {{ include('app/utility/clients/_tabs.html.twig') }}
+
+    <div class="card">
+        <div class="card-body">
+
+            {{ form_start(create_form) }}
+            <div class="row">
+                <div class="col-md-3">{{ form_widget(create_form.secret_key) }}</div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success">Add Client</button>
+                </div>
+            </div>
+            {{ form_end(create_form) }}
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-2">{{ form_widget(form.id) }}</div>
+                <div class="col-md-2">{{ form_widget(form.name) }}</div>
+                <div class="col-md-3">{{ form_widget(form.secret_key) }}</div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{{ path('utility.clients') }}" class="btn btn-default">Clear</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+    <div class="box">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'ID', 'id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Name', 'name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Secret Key', 'secret_key') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Created At', 'created_at') }}</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for client in pagination %}
+                <tr>
+                    <td>{{ client.id }}</td>
+                    <td><a href="{{ path('utility.clients.client.show', {'id': client.id}) }}">{{ client.name }}</a></td>
+                    <td>{{ client.secret_key }}</td>
+                    <td>{{ client.created_at }}</td>
+                    <td>
+                        <div class="actions">
+                            <a class="btn btn-sm btn-outline-success" href="{{ path('utility.clients.client.show', {'id': client.id}) }}">
+                                <i class="fa fa-search-plus"></i>
+                            </a>
+                            <form action="{{ path('utility.clients.client.sync', {'id': client.id}) }}" method="post">
+                                <input type="hidden" name="token" value="{{ csrf_token('sync') }}" />
+                                <button type="submit" class="btn btn-sm btn-outline-info"><i class="fa fa-cloud-download"></i></button>
+                            </form>
+                            <a class="btn btn-sm btn-outline-info" href="{{ path('utility.clients.client.edit', {'id': client.id}) }}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modalDelete" data-action="{{ path('utility.clients.client.delete', {'id': client.id}) }}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    {{ include('_modal_delete.html.twig') }}
+
+{% endblock %}

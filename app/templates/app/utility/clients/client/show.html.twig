@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ client.name }}{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients') }}">Clients</a></li>
+        <li class="breadcrumb-item active">{{ client.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+
+    {{ include('app/utility/clients/client/_tabs.html.twig') }}
+
+    <div class="controls">
+        <form action="{{ path('utility.clients.client.sync', {'id': client.id}) }}" method="post">
+            <input type="hidden" name="token" value="{{ csrf_token('sync') }}" />
+            <button type="submit" class="btn btn-primary">Sync</button>
+        </form>
+        <a href="{{ path('utility.clients.client.edit', {'id': client.id}) }}" class="btn btn-primary">Edit</a>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete" data-action="{{ path('utility.clients.client.delete', {'id': client.id}) }}">
+            Delete
+        </button>
+    </div>
+
+    <div class="box">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ client.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ client.name }}</td>
+                </tr>
+                <tr>
+                    <th>Secret Key</th>
+                    <td>{{ client.secretKey }}</td>
+                </tr>
+                <tr>
+                    <th>Created At</th>
+                    <td>{{ client.createdAt|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {{ include('_modal_delete.html.twig') }}
+
+{% endblock %}

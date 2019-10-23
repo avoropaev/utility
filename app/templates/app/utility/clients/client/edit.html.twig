@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ client.name }} - Edit{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients') }}">Clients</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('utility.clients.client.show', {'id': client.id}) }}">{{ client.name }}</a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary">Edit</button>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+{% endblock %}

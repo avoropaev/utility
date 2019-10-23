@@ -1,0 +1,81 @@
+@import "variables";
+@import "~@coreui/coreui/scss/coreui";
+@import "~simple-line-icons/scss/simple-line-icons";
+@import "~font-awesome/scss/font-awesome";
+@import "~bootstrap-select/sass/bootstrap-select";
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  & > * {
+    margin-right: 4px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+td .actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  & > * {
+    margin-right: 4px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.table {
+  th,
+  td {
+    vertical-align: middle;
+  }
+}
+
+.box {
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0,0,0,0.1);
+}
+
+.btn-outline-input {
+  color: #5c6873 !important;
+  border: 1px solid #e4e7ea;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.main {
+  .container-fluid {
+    padding: 0 20px;
+  }
+}
+
+.card {
+  &> .table-bordered {
+    border: none;
+    margin-top: -1px;
+
+    th:first-child, td:first-child {
+      border-left: none;
+    }
+
+    th:last-child, td:last-child {
+      border-right: none;
+    }
+
+    th, td {
+      border-bottom: none;
+    }
+  }
+}
+
+.badge.badge-lg {
+  padding: 0.5em;
+}

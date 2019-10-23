@@ -1,0 +1,38 @@
+version: '3'
+services:
+    utility-nginx:
+        image: ${REGISTRY_ADDRESS}/nginx:${IMAGE_TAG}
+        restart: always
+        depends_on:
+            - utility-php-fpm
+        ports:
+            - "80:80"
+    utility-php-fpm:
+        image: ${REGISTRY_ADDRESS}/php-fpm:${IMAGE_TAG}
+        restart: always
+        environment:
+            APP_SECRET: ${UTILITY_APP_SECRET}
+            DATABASE_URL: pgsql://app:${UTILITY_DB_PASSWORD}@utility-postgres:5432/app
+            MAILER_URL: ${UTILITY_MAILER_URL}
+        depends_on:
+            - utility-postgres
+    utility-php-cli:
+        image: ${REGISTRY_ADDRESS}/php-cli:${IMAGE_TAG}
+        environment:
+            APP_SECRET: ${UTILITY_APP_SECRET}
+            DATABASE_URL: pgsql://app:${UTILITY_DB_PASSWORD}@utility-postgres:5432/app
+            MAILER_URL: ${UTILITY_MAILER_URL}
+        depends_on:
+            - utility-postgres
+    utility-postgres:
+        image: ${REGISTRY_ADDRESS}/postgres:${IMAGE_TAG}
+        restart: always
+        volumes:
+            - utility-postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: ${UTILITY_DB_PASSWORD}
+            POSTGRES_DB: app
+
+volumes:
+    utility-postgres:
