@@ -1,3 +1,6 @@
+Utility: http://0.0.0.0:7000
+Mailer: http://0.0.0.0:7001
+
 Initialize project or reinitialize:
 
     make init
